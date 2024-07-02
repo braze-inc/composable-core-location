@@ -3,6 +3,7 @@ import ComposableArchitecture
 import CoreLocation
 
 extension LocationManager {
+
   /// The live implementation of the `LocationManager` interface. This implementation is capable of
   /// creating real `CLLocationManager` instances, listening to its delegate methods, and invoking
   /// its methods. You will typically use this when building for the simulator or device:
@@ -16,7 +17,7 @@ extension LocationManager {
   ///   )
   /// )
   /// ```
-  public static var live: Self {
+  public static var liveValue: Self {
     let manager = CLLocationManager()
 
     let (delegateStream, continuation) = AsyncStream<Action>.makeStream(
