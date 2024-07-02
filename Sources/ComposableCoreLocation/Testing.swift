@@ -1,9 +1,9 @@
-import ComposableArchitecture
 import CoreLocation
+import Dependencies
 import XCTestDynamicOverlay
 
 extension LocationManager {
-  
+
   /// The failing implementation of the ``LocationManager`` interface. By default this
   /// implementation stubs all of its endpoints as functions that immediately call `XCTFail`.
   ///
@@ -48,21 +48,26 @@ extension LocationManager {
     isRangingAvailable: unimplemented("isRangingAvailable"),
     location: unimplemented("location"),
     locationServicesEnabled: unimplemented("locationServicesEnabled"),
-    maximumRegionMonitoringDistance: unimplemented("maximumRegionMonitoringDistance", placeholder: .zero),
+    maximumRegionMonitoringDistance: unimplemented(
+      "maximumRegionMonitoringDistance", placeholder: .zero),
     monitoredRegions: unimplemented("monitoredRegions", placeholder: []),
     requestAlwaysAuthorization: unimplemented("requestAlwaysAuthorization"),
     requestLocation: unimplemented("requestLocation"),
     requestWhenInUseAuthorization: unimplemented("requestWhenInUseAuthorization"),
-    requestTemporaryFullAccuracyAuthorization: unimplemented("requestTemporaryFullAccuracyAuthorization"),
+    requestTemporaryFullAccuracyAuthorization: unimplemented(
+      "requestTemporaryFullAccuracyAuthorization"),
     set: unimplemented("set"),
-    significantLocationChangeMonitoringAvailable: unimplemented("significantLocationChangeMonitoringAvailable"),
+    significantLocationChangeMonitoringAvailable: unimplemented(
+      "significantLocationChangeMonitoringAvailable"),
     startMonitoringForRegion: unimplemented("startMonitoringForRegion"),
-    startMonitoringSignificantLocationChanges: unimplemented("startMonitoringSignificantLocationChanges"),
+    startMonitoringSignificantLocationChanges: unimplemented(
+      "startMonitoringSignificantLocationChanges"),
     startMonitoringVisits: unimplemented("startMonitoringVisits"),
     startUpdatingHeading: unimplemented("startUpdatingHeading"),
     startUpdatingLocation: unimplemented("startUpdatingLocation"),
     stopMonitoringForRegion: unimplemented("stopMonitoringForRegion"),
-    stopMonitoringSignificantLocationChanges: unimplemented("stopMonitoringSignificantLocationChanges"),
+    stopMonitoringSignificantLocationChanges: unimplemented(
+      "stopMonitoringSignificantLocationChanges"),
     stopMonitoringVisits: unimplemented("stopMonitoringVisits"),
     stopUpdatingHeading: unimplemented("stopUpdatingHeading"),
     stopUpdatingLocation: unimplemented("stopUpdatingLocation")

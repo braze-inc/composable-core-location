@@ -18,15 +18,15 @@ let package = Package(
   ],
   dependencies: [
     .package(
-      url: "https://github.com/pointfreeco/swift-composable-architecture",
-      from: "1.11.0"
+      url: "https://github.com/pointfreeco/swift-dependencies",
+      from: "1.3.0"
     )
   ],
   targets: [
     .target(
       name: "ComposableCoreLocation",
       dependencies: [
-        .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+        .product(name: "Dependencies", package: "swift-dependencies")
       ]
     ),
     .testTarget(

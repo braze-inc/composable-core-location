@@ -1,6 +1,5 @@
-import Combine
-import ComposableArchitecture
 import CoreLocation
+import Dependencies
 
 extension LocationManager {
 
