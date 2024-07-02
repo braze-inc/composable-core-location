@@ -1,4 +1,5 @@
 import CoreLocation
+import Dependencies
 
 /// A wrapper around Core Location's `CLLocationManager` that exposes its functionality through
 /// effects and actions, making it easy to use with the Composable Architecture and easy to test.
