@@ -3,14 +3,17 @@ import CoreLocation
 /// A value type wrapper for `CLRegion`. This type is necessary so that we can do equality checks
 /// and write tests against its values.
 public struct Region: Hashable {
-  public let rawValue: CLRegion?
+  @available(visionOS, unavailable)
+  public var rawValue: CLRegion? { _rawValue as? CLRegion }
+  private let _rawValue: Any?
 
   public var identifier: String
   public var notifyOnEntry: Bool
   public var notifyOnExit: Bool
 
+  @available(visionOS, unavailable)
   public init(rawValue: CLRegion) {
-    self.rawValue = rawValue
+    self._rawValue = rawValue
 
     self.identifier = rawValue.identifier
     self.notifyOnEntry = rawValue.notifyOnEntry
@@ -22,7 +25,7 @@ public struct Region: Hashable {
     notifyOnEntry: Bool,
     notifyOnExit: Bool
   ) {
-    self.rawValue = nil
+    self._rawValue = nil
 
     self.identifier = identifier
     self.notifyOnEntry = notifyOnEntry

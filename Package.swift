@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:5.9
 
 import PackageDescription
 
@@ -9,6 +9,7 @@ let package = Package(
     .macOS(.v10_15),
     .tvOS(.v13),
     .watchOS(.v6),
+    .visionOS(.v1),
   ],
   products: [
     .library(
@@ -18,14 +19,15 @@ let package = Package(
   ],
   dependencies: [
     .package(
-      url: "https://github.com/pointfreeco/swift-composable-architecture",
-      .upToNextMajor(from: "0.43.0"))
+      url: "https://github.com/pointfreeco/swift-dependencies",
+      from: "1.3.0"
+    )
   ],
   targets: [
     .target(
       name: "ComposableCoreLocation",
       dependencies: [
-        .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+        .product(name: "Dependencies", package: "swift-dependencies")
       ]
     ),
     .testTarget(
