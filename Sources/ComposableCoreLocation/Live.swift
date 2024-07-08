@@ -34,12 +34,16 @@ extension LocationManager {
         return nil
       },
       authorizationStatus: {
-        #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
-          if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
-            return manager.authorizationStatus
-          }
+        #if os(visionOS)
+          return manager.authorizationStatus
+        #else
+          #if (compiler(>=5.3) && !(os(macOS) || targetEnvironment(macCatalyst))) || compiler(>=5.3.1)
+            if #available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, macCatalyst 14.0, *) {
+              return manager.authorizationStatus
+            }
+          #endif
+          return CLLocationManager.authorizationStatus()
         #endif
-        return CLLocationManager.authorizationStatus()
       },
       delegate: { delegateStream },
       dismissHeadingCalibrationDisplay: {
@@ -55,14 +59,14 @@ extension LocationManager {
         #endif
       },
       headingAvailable: {
-        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst) || os(visionOS)
           return CLLocationManager.headingAvailable()
         #else
           return false
         #endif
       },
       isRangingAvailable: {
-        #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
+        #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst) || os(visionOS)
           return CLLocationManager.isRangingAvailable()
         #else
           return false
@@ -93,7 +97,7 @@ extension LocationManager {
         manager.requestLocation()
       },
       requestWhenInUseAuthorization: {
-        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst) || os(visionOS)
           manager.requestWhenInUseAuthorization()
         #endif
       },
@@ -111,7 +115,7 @@ extension LocationManager {
             manager.allowsBackgroundLocationUpdates = allowsBackgroundLocationUpdates
           }
         #endif
-        #if os(iOS) || os(macOS) || os(tvOS) || os(watchOS) || targetEnvironment(macCatalyst)
+        #if os(iOS) || os(macOS) || os(tvOS) || os(watchOS) || targetEnvironment(macCatalyst) || os(visionOS)
           if let desiredAccuracy = properties.desiredAccuracy {
             manager.desiredAccuracy = desiredAccuracy
           }
@@ -127,7 +131,7 @@ extension LocationManager {
             manager.headingOrientation = headingOrientation
           }
         #endif
-        #if os(iOS) || targetEnvironment(macCatalyst)
+        #if os(iOS) || targetEnvironment(macCatalyst) || os(visionOS)
           if let pausesLocationUpdatesAutomatically = properties
             .pausesLocationUpdatesAutomatically
           {
@@ -139,7 +143,7 @@ extension LocationManager {
         #endif
       },
       significantLocationChangeMonitoringAvailable: {
-        #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
+        #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst) || os(visionOS)
           return CLLocationManager.significantLocationChangeMonitoringAvailable()
         #else
           return false
@@ -166,7 +170,7 @@ extension LocationManager {
         #endif
       },
       startUpdatingLocation: {
-        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst) || os(visionOS)
           manager.startUpdatingLocation()
         #endif
       },
@@ -191,7 +195,7 @@ extension LocationManager {
         #endif
       },
       stopUpdatingLocation: {
-        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst)
+        #if os(iOS) || os(macOS) || os(watchOS) || targetEnvironment(macCatalyst) || os(visionOS)
           manager.stopUpdatingLocation()
         #endif
       }
@@ -206,11 +210,17 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
     self.continuation = continuation
   }
 
-  func locationManager(
-    _ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus
-  ) {
-    self.continuation.yield(.didChangeAuthorization(status))
+  func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+    self.continuation.yield(.didChangeAuthorization(manager.authorizationStatus))
   }
+
+  #if !os(visionOS)
+    func locationManager(
+      _ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus
+    ) {
+      self.continuation.yield(.didChangeAuthorization(status))
+    }
+  #endif
 
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
     self.continuation.yield(.didFailWithError(LocationManager.Error(error)))
@@ -234,7 +244,7 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
     }
   #endif
 
-  #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst)
+  #if os(iOS) || os(macOS) || targetEnvironment(macCatalyst) || os(visionOS)
     func locationManager(
       _ manager: CLLocationManager, didFinishDeferredUpdatesWithError error: Error?
     ) {
@@ -244,13 +254,13 @@ private class LocationManagerDelegate: NSObject, CLLocationManagerDelegate {
     }
   #endif
 
-  #if os(iOS) || targetEnvironment(macCatalyst)
+  #if os(iOS) || targetEnvironment(macCatalyst) || os(visionOS)
     func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
       self.continuation.yield(.didPauseLocationUpdates)
     }
   #endif
 
-  #if os(iOS) || targetEnvironment(macCatalyst)
+  #if os(iOS) || targetEnvironment(macCatalyst) || os(visionOS)
     func locationManagerDidResumeLocationUpdates(_ manager: CLLocationManager) {
       self.continuation.yield(.didResumeLocationUpdates)
     }

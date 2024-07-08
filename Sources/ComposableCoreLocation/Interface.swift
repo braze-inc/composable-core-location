@@ -186,19 +186,23 @@ public struct LocationManager: DependencyKey {
 
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
+    @available(visionOS, unavailable)
     case didDetermineState(CLRegionState, region: Region)
 
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
+    @available(visionOS, unavailable)
     case didEnterRegion(Region)
 
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
+    @available(visionOS, unavailable)
     case didExitRegion(Region)
 
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
+    @available(visionOS, unavailable)
     case didFailRanging(beaconConstraint: CLBeaconIdentityConstraint, error: Error)
 
     case didFailWithError(Error)
@@ -217,6 +221,7 @@ public struct LocationManager: DependencyKey {
 
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
+    @available(visionOS, unavailable)
     case didStartMonitoring(region: Region)
 
     @available(macOS, unavailable)
@@ -232,15 +237,18 @@ public struct LocationManager: DependencyKey {
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
+    @available(visionOS, unavailable)
     case didVisit(Visit)
 
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
+    @available(visionOS, unavailable)
     case monitoringDidFail(region: Region?, error: Error)
 
     @available(macOS, unavailable)
     @available(tvOS, unavailable)
     @available(watchOS, unavailable)
+    @available(visionOS, unavailable)
     case didRangeBeacons([Beacon], satisfyingConstraint: CLBeaconIdentityConstraint)
   }
 
